@@ -4,6 +4,9 @@ import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import welCome from '../components/welCome.vue'
 import Users from '../components/user/users.vue'
+import Rights from '../components/power/Rights.vue'
+import Roles from '../components/power/Roles.vue'
+
 
 Vue.use(VueRouter)
 
@@ -15,9 +18,12 @@ const router = new VueRouter({
       path: '/home', component: Home, redirect: '/welCome',
       children: [
         { path: '/welCome', component: welCome },
-        { path: '/users', component: Users }]
+        { path: '/users', component: Users },
+        { path: '/rights', component: Rights },
+        { path: '/roles', component: Roles },
+      ]
     },
-  ] 
+  ]
 })
 
 // 挂载路由守卫(路由拦截)
