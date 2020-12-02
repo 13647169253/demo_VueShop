@@ -22,3 +22,10 @@ body,
   font-size: 14px;
   font-weight: 400;
 }
+
+.el-cascader-panel {
+  height: 350px;
+}
+.el-scrollbar__wrap {
+  overflow-x: hidden;
+}
