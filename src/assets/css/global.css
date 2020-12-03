@@ -29,3 +29,6 @@ body,
 .el-scrollbar__wrap {
   overflow-x: hidden;
 }
+.el-alert__title {
+  font-size: 14px;
+}
