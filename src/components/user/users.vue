@@ -99,6 +99,7 @@
         :page-size="queryInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
+        background
       >
       </el-pagination>
     </el-card>
@@ -380,10 +381,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.el-pagination {
-  margin-top: 20px;
-  margin-left: 30%;
-}
 .search {
   background-color: #409eff !important;
   color: #fff !important;
