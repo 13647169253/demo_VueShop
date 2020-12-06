@@ -15,15 +15,25 @@ import vueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-
+// nprogress
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 // 配置默认路由
 Axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+// 请求拦截器
 Axios.interceptors.request.use(config => {
   // 为每一次的axios请求添加携带token的请求头
-  config.headers.Authorization = window.sessionStorage.getItem("token")
+  NProgress.start()
+  config.headers.Authorization = window.sessionStorage.getItem('token')
   return config
 })
+// 响应拦截器
+Axios.interceptors.response.use(config => {
+  NProgress.done()
+  return config
+})
+
 Vue.prototype.$http = Axios
 
 Vue.config.productionTip = false
@@ -43,7 +53,6 @@ Vue.filter('dateFormat', function (originVal) {
   const ss = (dt.getSeconds()).toString().padStart(2, '0')
   return `${y}-${m}-${d} /  ${hh}:${mm}:${ss}`
 })
-
 
 new Vue({
   router,

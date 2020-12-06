@@ -130,114 +130,114 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       rolelist: [],
       setRightDialogVisible: false,
       rightslist: [],
       treeProps: {
-        label: "authName",
-        children: "children",
+        label: 'authName',
+        children: 'children'
       },
       defKeys: [],
-      roleId: "",
+      roleId: '',
       /* 添加 */
       addDialogVisible: false,
-      addRole: { roleName: "", roleDesc: "" },
+      addRole: { roleName: '', roleDesc: '' },
       addRoleRules: {
         roleName: [
-          { required: true, message: "请输入角色名", trigger: "blur" },
+          { required: true, message: '请输入角色名', trigger: 'blur' },
           {
             min: 1,
             max: 10,
-            message: "角色名的长度为1~10个字符",
-            trigger: "blur",
-          },
-        ],
-      },
-    };
+            message: '角色名的长度为1~10个字符',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
   },
-  created() {
-    this.getRoleList();
+  created () {
+    this.getRoleList()
   },
   methods: {
     // 获取说有角色列表
-    async getRoleList() {
-      const { data: res } = await this.$http.get("roles");
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.rolelist = res.data;
+    async getRoleList () {
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.rolelist = res.data
     },
-    async removeRoleById(id) {
+    async removeRoleById (id) {
       const confirmResult = await this.$confirm(
-        "此操作将永久删除该角色, 是否继续?",
-        "提示",
+        '此操作将永久删除该角色, 是否继续?',
+        '提示',
         {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
-      ).catch((err) => err);
-      if (confirmResult != "confirm") return false;
-      const { data: res } = await this.$http.delete(`roles/${id}`);
-      if (res.meta.status !== 200) return this.$message.error(res.mata.msg);
-      this.getRoleList();
-      this.$message.success(res.meta.msg);
+      ).catch((err) => err)
+      if (confirmResult !== 'confirm') return false
+      const { data: res } = await this.$http.delete(`roles/${id}`)
+      if (res.meta.status !== 200) return this.$message.error(res.mata.msg)
+      this.getRoleList()
+      this.$message.success(res.meta.msg)
     },
-    async removeRightById(role, rightId) {
+    async removeRightById (role, rightId) {
       const confirmResult = await this.$confirm(
-        "此操作将永久取消该权限, 是否继续?",
-        "提示",
+        '此操作将永久取消该权限, 是否继续?',
+        '提示',
         {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
-      ).catch((err) => err);
-      if (confirmResult != "confirm") return false;
+      ).catch((err) => err)
+      if (confirmResult !== 'confirm') return false
       const { data: res } = await this.$http.delete(
         `roles/${role.id}/rights/${rightId}`
-      );
-      if (res.meta.status !== 200) return this.$message.error(res.mata.msg);
-      this.$message.success(res.meta.msg);
-      role.children = res.data;
+      )
+      if (res.meta.status !== 200) return this.$message.error(res.mata.msg)
+      this.$message.success(res.meta.msg)
+      role.children = res.data
     },
-    async showSetRightDialog(role) {
-      this.roleId = role.id;
-      const { data: res } = await this.$http.get("rights/tree");
-      if (res.meta.status !== 200) return this.$message.error(res.mata.msg);
-      this.rightslist = res.data;
-      this.getLeafKeys(role, this.defKeys);
-      this.setRightDialogVisible = true;
+    async showSetRightDialog (role) {
+      this.roleId = role.id
+      const { data: res } = await this.$http.get('rights/tree')
+      if (res.meta.status !== 200) return this.$message.error(res.mata.msg)
+      this.rightslist = res.data
+      this.getLeafKeys(role, this.defKeys)
+      this.setRightDialogVisible = true
     },
     // 使用递归获取已有权限的ID,并将ID存储在defKeys数组中
-    getLeafKeys(node, arr) {
-      if (!node.children) return arr.push(node.id);
+    getLeafKeys (node, arr) {
+      if (!node.children) return arr.push(node.id)
       node.children.forEach((item) => {
-        this.getLeafKeys(item, arr);
-      });
+        this.getLeafKeys(item, arr)
+      })
     },
-    setRightDialogClosed() {
-      this.defKeys = [];
+    setRightDialogClosed () {
+      this.defKeys = []
     },
-    async allotRights() {
+    async allotRights () {
       const keys = [
         ...this.$refs.treeRef.getCheckedKeys(),
-        ...this.$refs.treeRef.getHalfCheckedKeys(),
-      ];
-      const idStr = keys.join(",");
+        ...this.$refs.treeRef.getHalfCheckedKeys()
+      ]
+      const idStr = keys.join(',')
       const { data: res } = await this.$http.post(
         `roles/${this.roleId}/rights`,
         {
-          rids: idStr,
+          rids: idStr
         }
-      );
-      if (res.meta.status !== 200) return this.$message.error(res.mata.msg);
-      this.$message.success(res.meta.msg);
-      this.getRoleList();
-      this.setRightDialogVisible = false;
-    },
-  },
-};
+      )
+      if (res.meta.status !== 200) return this.$message.error(res.mata.msg)
+      this.$message.success(res.meta.msg)
+      this.getRoleList()
+      this.setRightDialogVisible = false
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

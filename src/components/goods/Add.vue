@@ -122,147 +122,147 @@
 </template>
 
 <script>
-import _ from "lodash";
+import _ from 'lodash'
 export default {
-  data() {
+  data () {
     return {
-      activeIndex: "0",
+      activeIndex: '0',
       addForm: {
-        goods_name: "",
+        goods_name: '',
         goods_price: null,
         goods_weight: null,
         goods_number: null,
         goods_cat: [],
         pics: [],
-        goods_introduce: "",
-        attrs: [],
+        goods_introduce: '',
+        attrs: []
       },
       addFormRules: {
         goods_name: [
-          { required: true, message: "请输入商品名称", trigger: "blur" },
+          { required: true, message: '请输入商品名称', trigger: 'blur' }
         ],
         goods_price: [
-          { required: true, message: "请输入商品价格", trigger: "blur" },
+          { required: true, message: '请输入商品价格', trigger: 'blur' }
         ],
         goods_weight: [
-          { required: true, message: "请输入商品重量", trigger: "blur" },
+          { required: true, message: '请输入商品重量', trigger: 'blur' }
         ],
         goods_number: [
-          { required: true, message: "请输入商品数量", trigger: "blur" },
+          { required: true, message: '请输入商品数量', trigger: 'blur' }
         ],
         goods_cat: [
-          { required: true, message: "请输入商品的分类", trigger: "blur" },
-        ],
+          { required: true, message: '请输入商品的分类', trigger: 'blur' }
+        ]
       },
       cataList: [],
-      cateProps: { label: "cat_name", value: "cat_id", children: "children" },
+      cateProps: { label: 'cat_name', value: 'cat_id', children: 'children' },
       manyTableData: [],
       onlyTableData: [],
-      uploadURL: "http://127.0.0.1:8888/api/private/v1/upload",
+      uploadURL: 'http://127.0.0.1:8888/api/private/v1/upload',
       headerObj: {
-        Authorization: window.sessionStorage.getItem("token"),
+        Authorization: window.sessionStorage.getItem('token')
       },
-      preViewPath: "",
-      preViewVisible: false,
-    };
+      preViewPath: '',
+      preViewVisible: false
+    }
   },
-  created() {
-    this.getCateList();
+  created () {
+    this.getCateList()
   },
   methods: {
-    async getCateList() {
-      const { data: res } = await this.$http.get("categories");
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.cataList = res.data;
+    async getCateList () {
+      const { data: res } = await this.$http.get('categories')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.cataList = res.data
     },
     // 级联选择器项发生变化会触发这个函数
-    handleChange() {
+    handleChange () {
       if (this.addForm.goods_cat.length !== 3) {
-        this.addForm.goods_cat.length = [];
+        this.addForm.goods_cat.length = []
       }
     },
-    beforTabLeave(activeName, oldActiveName) {
-      if ((oldActiveName = "0" && this.addForm.goods_cat.length !== 3)) {
-        this.$message.error("请填写必填项后进行切换");
-        return false;
+    beforTabLeave (activeName, oldActiveName) {
+      if ((oldActiveName = '0' && this.addForm.goods_cat.length !== 3)) {
+        this.$message.error('请填写必填项后进行切换')
+        return false
       }
     },
-    async tabClicked() {
-      if (this.activeIndex == "1") {
+    async tabClicked () {
+      if (this.activeIndex === '1') {
         const { data: res } = await this.$http.get(
           `categories/${this.cateId}/attributes`,
           {
-            params: { sel: "many" },
+            params: { sel: 'many' }
           }
-        );
-        if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
+        )
+        if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
         res.data.forEach((item) => {
           item.attr_vals =
-            item.attr_vals.length == 0 ? [] : item.attr_vals.split(" ");
-        });
-        this.manyTableData = res.data;
-      } else if (this.activeIndex == "2") {
+            item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
+        })
+        this.manyTableData = res.data
+      } else if (this.activeIndex === '2') {
         const { data: res } = await this.$http.get(
           `categories/${this.cateId}/attributes`,
           {
-            params: { sel: "only" },
+            params: { sel: 'only' }
           }
-        );
-        if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-        this.onlyTableData = res.data;
+        )
+        if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+        this.onlyTableData = res.data
       }
     },
-    handlePreview(file) {
-      this.preViewPath = file.response.data.url;
-      this.preViewVisible = true;
+    handlePreview (file) {
+      this.preViewPath = file.response.data.url
+      this.preViewVisible = true
     },
-    handleRemove(file) {
-      const filePath = file.response.data.tmp_path;
-      const x = this.addForm.pics.findIndex((i) => i.pic == filePath);
-      this.addForm.pics.splice(x, 1);
+    handleRemove (file) {
+      const filePath = file.response.data.tmp_path
+      const x = this.addForm.pics.findIndex((i) => i.pic === filePath)
+      this.addForm.pics.splice(x, 1)
     },
-    handleSuccess(response) {
-      const picInfo = { pic: response.data.tmp_path };
-      this.addForm.pics.push(picInfo);
+    handleSuccess (response) {
+      const picInfo = { pic: response.data.tmp_path }
+      this.addForm.pics.push(picInfo)
     },
-    add() {
+    add () {
       this.$refs.addFormRef.validate(async (valid) => {
         if (!valid) {
-          this.$message.error("请检查必填项是否添加合法");
+          this.$message.error('请检查必填项是否添加合法')
         }
-        const form = _.cloneDeep(this.addForm);
-        form.goods_cat = form.goods_cat.join(",");
+        const form = _.cloneDeep(this.addForm)
+        form.goods_cat = form.goods_cat.join(',')
         this.manyTableData.forEach((item) => {
           const newInfo = {
             attr_id: item.attr_id,
-            attr_value: item.attr_vals.join(" "),
-          };
-          this.addForm.attrs.push(newInfo);
-        });
+            attr_value: item.attr_vals.join(' ')
+          }
+          this.addForm.attrs.push(newInfo)
+        })
         this.onlyTableData.forEach((item) => {
           const newInfo = {
             attr_id: item.attr_id,
-            attr_value: item.attr_vals,
-          };
-          this.addForm.attrs.push(newInfo);
-        });
-        form.attrs = this.addForm.attrs;
-        const { data: res } = await this.$http.post("goods", form);
-        if (res.meta.status !== 201) return this.$message.error(res.meta.msg);
-        this.$message.success(res.meta.msg);
-        this.$router.push("/goods");
-      });
-    },
+            attr_value: item.attr_vals
+          }
+          this.addForm.attrs.push(newInfo)
+        })
+        form.attrs = this.addForm.attrs
+        const { data: res } = await this.$http.post('goods', form)
+        if (res.meta.status !== 201) return this.$message.error(res.meta.msg)
+        this.$message.success(res.meta.msg)
+        this.$router.push('/goods')
+      })
+    }
   },
   computed: {
-    cateId() {
+    cateId () {
       if (this.addForm.goods_cat.length === 3) {
-        return this.addForm.goods_cat[2];
+        return this.addForm.goods_cat[2]
       }
-      return null;
-    },
-  },
-};
+      return null
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

@@ -17,7 +17,7 @@
       </el-alert>
       <el-row class="cat_opt">
         <el-col>
-          <span><h4>商品分类　:</h4></span>
+          <span><h4>商品分类:</h4></span>
           <el-cascader
             v-model="selectedCateKeys"
             :options="cateList"
@@ -210,202 +210,202 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       cateList: [],
-      cateProps: { value: "cat_id", label: "cat_name", children: "children" },
+      cateProps: { value: 'cat_id', label: 'cat_name', children: 'children' },
       selectedCateKeys: [],
-      activeName: "many",
+      activeName: 'many',
       manyTableData: [],
       onylTableData: [],
       addDialogVisible: false,
-      addFrom: { attr_name: "" },
+      addFrom: { attr_name: '' },
       addFromRules: {
         attr_name: [
           {
             required: true,
-            message: `请输入参数名`,
-            trigger: "blur",
-          },
-        ],
+            message: '请输入参数名',
+            trigger: 'blur'
+          }
+        ]
       },
       editDialogVisible: false,
-      editFrom: { attr_name: "" },
+      editFrom: { attr_name: '' },
       editFromRules: {
         attr_name: [
           {
             required: true,
-            message: `请输入参数名`,
-            trigger: "blur",
-          },
-        ],
-      },
-    };
+            message: '请输入参数名',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
   },
-  created() {
-    this.getCateList();
+  created () {
+    this.getCateList()
   },
   methods: {
-    async getCateList() {
-      const { data: res } = await this.$http.get("categories");
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.cateList = res.data;
+    async getCateList () {
+      const { data: res } = await this.$http.get('categories')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.cateList = res.data
     },
-    handleChange() {
-      this.getParamsData();
+    handleChange () {
+      this.getParamsData()
     },
-    handleTabClick() {
-      console.log(this.activeName);
-      this.getParamsData();
+    handleTabClick () {
+      console.log(this.activeName)
+      this.getParamsData()
     },
-    async getParamsData() {
+    async getParamsData () {
       if (this.selectedCateKeys.length !== 3) {
-        this.selectedCateKeys = [];
-        this.manyTableData = [];
-        this.onylTableData = [];
-        return;
+        this.selectedCateKeys = []
+        this.manyTableData = []
+        this.onylTableData = []
+        return
       }
       const { data: res } = await this.$http.get(
         `categories/${this.cataId}/attributes`,
         {
-          params: { sel: this.activeName },
+          params: { sel: this.activeName }
         }
-      );
-      if (res.meta.status !== 200) return this.$message.error(res, meta.status);
+      )
+      if (res.meta.status !== 200) return this.$message.error(res.meta.status)
       res.data.forEach((item) => {
-        item.attr_vals = item.attr_vals ? item.attr_vals.split(" ") : [];
-        item.inputVisible = false;
-        item.inputValue = "";
-      });
-      if (this.activeName == "many") {
-        this.manyTableData = res.data;
+        item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
+        item.inputVisible = false
+        item.inputValue = ''
+      })
+      if (this.activeName === 'many') {
+        this.manyTableData = res.data
       } else {
-        this.onylTableData = res.data;
+        this.onylTableData = res.data
       }
-      console.log(this.manyTableData);
+      console.log(this.manyTableData)
     },
-    addDialogClose() {
-      this.$refs.addFormRef.resetFields();
+    addDialogClose () {
+      this.$refs.addFormRef.resetFields()
     },
-    addParams() {
+    addParams () {
       this.$refs.addFormRef.validate(async (valid) => {
-        if (!valid) return;
+        if (!valid) return
         const { data: res } = await this.$http.post(
           `categories/${this.cataId}/attributes`,
           {
             attr_name: this.addFrom.attr_name,
-            attr_sel: this.activeName,
+            attr_sel: this.activeName
           }
-        );
-        if (res.meta.status !== 201) return this.$message.error(res.meta.msg);
-        this.$message.success(res.meta.msg);
-        this.getParamsData();
-        this.addDialogVisible = false;
-      });
+        )
+        if (res.meta.status !== 201) return this.$message.error(res.meta.msg)
+        this.$message.success(res.meta.msg)
+        this.getParamsData()
+        this.addDialogVisible = false
+      })
     },
-    async showEditDialog(attr_id) {
+    async showEditDialog (attr_id) {
       const {
-        data: res,
+        data: res
       } = await this.$http.get(
         `categories/${this.cataId}/attributes/${attr_id}`,
         { params: { attr_sel: this.activeName } }
-      );
-      this.editDialogVisible = true;
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.editFrom = res.data;
+      )
+      this.editDialogVisible = true
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.editFrom = res.data
     },
-    editDialogClose() {
-      this.$refs.editFormRef.resetFields();
+    editDialogClose () {
+      this.$refs.editFormRef.resetFields()
     },
-    editParams() {
+    editParams () {
       this.$refs.editFormRef.validate(async (valid) => {
-        if (!valid) return;
+        if (!valid) return
         const { data: res } = await this.$http.put(
           `categories/${this.cataId}/attributes/${this.editFrom.attr_id}`,
           {
             attr_name: this.editFrom.attr_name,
-            attr_sel: this.activeName,
+            attr_sel: this.activeName
           }
-        );
-        if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-        this.$message.success(res.meta.msg);
-        this.getParamsData();
-        this.editDialogVisible = false;
-      });
+        )
+        if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+        this.$message.success(res.meta.msg)
+        this.getParamsData()
+        this.editDialogVisible = false
+      })
     },
-    async removeParames(id) {
+    async removeParames (id) {
       const confirmResult = await this.$confirm(
-        "此操作将永久删除该属性参数, 是否继续?",
-        "提示",
+        '此操作将永久删除该属性参数, 是否继续?',
+        '提示',
         {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
-      ).catch((err) => err);
-      if (confirmResult !== "confirm") return;
+      ).catch((err) => err)
+      if (confirmResult !== 'confirm') return
       const { data: res } = await this.$http.delete(
         `categories/${this.cataId}/attributes/${id}`
-      );
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.$message.success(res.meta.msg);
-      this.getParamsData();
+      )
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success(res.meta.msg)
+      this.getParamsData()
     },
-    async handleInputConfirm(row) {
-      if (row.inputValue.trim().length == 0) {
-        row.inputValue = "";
-        row.inputVisible = false;
-        return;
+    async handleInputConfirm (row) {
+      if (row.inputValue.trim().length === 0) {
+        row.inputValue = ''
+        row.inputVisible = false
+        return
       }
-      row.attr_vals.push(row.inputValue.trim());
-      row.inputValue = "";
-      row.inputVisible = false;
-      this.saveTagAttrVals(row);
+      row.attr_vals.push(row.inputValue.trim())
+      row.inputValue = ''
+      row.inputVisible = false
+      this.saveTagAttrVals(row)
     },
-    showInput(row) {
-      row.inputVisible = true;
+    showInput (row) {
+      row.inputVisible = true
       // $nextTick 方法的作用,就是当页面上的元素被重新渲染之后,才会指定回调函数中的代码
       this.$nextTick((_) => {
-        this.$refs.saveTagInput.$refs.input.focus();
-      });
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
     },
-    async handleTagClose(i, row) {
-      row.attr_vals.splice(i, 1);
-      this.saveTagAttrVals(row);
+    async handleTagClose (i, row) {
+      row.attr_vals.splice(i, 1)
+      this.saveTagAttrVals(row)
     },
     // 讲相同的请求进行封装
-    async saveTagAttrVals(row) {
+    async saveTagAttrVals (row) {
       const { data: res } = await this.$http.put(
         `categories/${this.cataId}/attributes/${row.attr_id}`,
         {
           attr_name: row.attr_name,
           attr_sel: row.attr_sel,
-          attr_vals: row.attr_vals.join(" "),
+          attr_vals: row.attr_vals.join(' ')
         }
-      );
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.$message.success(res.meta.msg);
-    },
+      )
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success(res.meta.msg)
+    }
   },
   computed: {
-    setBtnDisabled() {
+    setBtnDisabled () {
       if (this.selectedCateKeys.length !== 3) {
-        return true;
+        return true
       }
-      return false;
+      return false
     },
-    cataId() {
-      if (this.selectedCateKeys.length == 3) return this.selectedCateKeys[2];
-      return null;
+    cataId () {
+      if (this.selectedCateKeys.length === 3) return this.selectedCateKeys[2]
+      return null
     },
-    setDialogTitle() {
-      if (this.activeName == "many") {
-        return "动态参数";
+    setDialogTitle () {
+      if (this.activeName === 'many') {
+        return '动态参数'
       }
-      return "静态属性";
-    },
-  },
-};
+      return '静态属性'
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

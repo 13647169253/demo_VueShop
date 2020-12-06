@@ -72,60 +72,60 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       queryInfo: {
-        query: "",
+        query: '',
         pagenum: 1,
-        pagesize: 10,
+        pagesize: 10
       },
       goodsList: [],
-      total: 0,
-    };
+      total: 0
+    }
   },
-  created() {
-    this.getGoodsList();
+  created () {
+    this.getGoodsList()
   },
   methods: {
-    async getGoodsList() {
-      const { data: res } = await this.$http.get(`goods`, {
-        params: this.queryInfo,
-      });
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
+    async getGoodsList () {
+      const { data: res } = await this.$http.get('goods', {
+        params: this.queryInfo
+      })
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       // this.$message.success(res.meta.msg);
-      this.goodsList = res.data.goods;
-      this.total = res.data.total;
+      this.goodsList = res.data.goods
+      this.total = res.data.total
     },
-    handleSizeChange(newSize) {
-      this.queryInfo.pagesize = newSize;
-      this.getGoodsList();
+    handleSizeChange (newSize) {
+      this.queryInfo.pagesize = newSize
+      this.getGoodsList()
     },
-    handleCurrentChange(newPage) {
-      this.queryInfo.pagenum = newPage;
-      this.getGoodsList();
+    handleCurrentChange (newPage) {
+      this.queryInfo.pagenum = newPage
+      this.getGoodsList()
     },
-    async removeById(id) {
+    async removeById (id) {
       const confirmResult = await this.$confirm(
-        "此操作将永久删除该商品, 是否继续?",
-        "提示",
+        '此操作将永久删除该商品, 是否继续?',
+        '提示',
         {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
-      ).catch((err) => err);
-      if (confirmResult !== "confirm") return;
-      const { data: res } = await this.$http.delete(`goods/${id}`);
-      console.log(res);
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.$message.success(res.meta.msg);
-      this.getGoodsList();
+      ).catch((err) => err)
+      if (confirmResult !== 'confirm') return
+      const { data: res } = await this.$http.delete(`goods/${id}`)
+      console.log(res)
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success(res.meta.msg)
+      this.getGoodsList()
     },
-    goAddpage() {
-      this.$router.push("/goods/add");
-    },
-  },
-};
+    goAddpage () {
+      this.$router.push('/goods/add')
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

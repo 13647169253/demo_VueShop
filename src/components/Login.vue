@@ -18,7 +18,7 @@
               v-model="loginForm.username"
             ></el-input>
           </el-form-item>
-          <el-form-item label="密　码" prop="password">
+          <el-form-item label="密码" prop="password">
             <el-input
               type="password"
               prefix-icon="iconfont icon-3702mima"
@@ -26,8 +26,8 @@
             ></el-input>
           </el-form-item>
           <el-form-item class="btns">
-            <el-button type="success" @click="login">登　录</el-button>
-            <el-button type="info" @click="resetLoginForm">重　置</el-button>
+            <el-button type="success" @click="login">登录</el-button>
+            <el-button type="info" @click="resetLoginForm">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -37,40 +37,40 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      loginForm: { username: "admin", password: "123456" },
+      loginForm: { username: 'admin', password: '123456' },
       loginFormRules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 10, message: "长度在3~10个字符", trigger: "blur" },
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在3~10个字符', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, max: 15, message: "长度在6~15个字符", trigger: "blur" },
-        ],
-      },
-    };
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 15, message: '长度在6~15个字符', trigger: 'blur' }
+        ]
+      }
+    }
   },
   methods: {
     // 重置表单
-    resetLoginForm() {
-      this.$refs.loginFormRef.resetFields();
+    resetLoginForm () {
+      this.$refs.loginFormRef.resetFields()
     },
     // 表单内容预验证;validate()返回false或者true
-    login() {
+    login () {
       this.$refs.loginFormRef.validate(async (valid) => {
-        if (!valid) return;
+        if (!valid) return
         // 重新给dada 命名为res
-        const { data: res } = await this.$http.post("login", this.loginForm);
-        if (res.meta.status !== 200) return this.$message.error("登陆失败");
-        this.$message.success("登陆成功");
-        window.sessionStorage.setItem("token", res.data.token);
-        this.$router.push("/home");
-      });
-    },
-  },
-};
+        const { data: res } = await this.$http.post('login', this.loginForm)
+        if (res.meta.status !== 200) return this.$message.error('登陆失败')
+        this.$message.success('登陆成功')
+        window.sessionStorage.setItem('token', res.data.token)
+        this.$router.push('/home')
+      })
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

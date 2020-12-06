@@ -111,66 +111,66 @@
 </template>
 
 <script>
-import cityData from "./citydata.js";
+import cityData from './citydata.js'
 
 export default {
-  data() {
+  data () {
     return {
       queryInfo: {
         query: null,
         pagenum: 1,
-        pagesize: 10,
+        pagesize: 10
       },
       total: null,
       orderList: [],
       addressVisible: false,
-      addressForm: { address1: [], address2: "" },
+      addressForm: { address1: [], address2: '' },
       addressFormRules: {
         address1: [
-          { required: true, message: "请选择省市区/县", trigger: "blur" },
+          { required: true, message: '请选择省市区/县', trigger: 'blur' }
         ],
         address2: [
-          { required: true, message: "请输入详细地址", trigger: "blur" },
-        ],
+          { required: true, message: '请输入详细地址', trigger: 'blur' }
+        ]
       },
       cityData,
       progressVisible: false,
-      progressInfo: [],
-    };
+      progressInfo: []
+    }
   },
-  created() {
-    this.getOrderList();
+  created () {
+    this.getOrderList()
   },
   methods: {
-    async getOrderList() {
-      const { data: res } = await this.$http.get("orders", {
-        params: this.queryInfo,
-      });
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.total = res.data.total;
-      this.orderList = res.data.goods;
+    async getOrderList () {
+      const { data: res } = await this.$http.get('orders', {
+        params: this.queryInfo
+      })
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.total = res.data.total
+      this.orderList = res.data.goods
     },
-    handleSizeChange(newSize) {
-      this.queryInfo.pagesize = newSize;
-      this.getOrderList();
+    handleSizeChange (newSize) {
+      this.queryInfo.pagesize = newSize
+      this.getOrderList()
     },
-    handleCurrentChange(newPage) {
-      this.queryInfo.pagenum = newPage;
-      this.getOrderList();
+    handleCurrentChange (newPage) {
+      this.queryInfo.pagenum = newPage
+      this.getOrderList()
     },
-    showBox() {
-      this.addressVisible = true;
+    showBox () {
+      this.addressVisible = true
     },
-    addressDialogClose() {
-      this.$refs.addressFormRef.resetFields();
+    addressDialogClose () {
+      this.$refs.addressFormRef.resetFields()
     },
-    async showProgressBox() {
-      const { data: res } = await this.$http.get("/kuaidi/DPK210206915703");
-      this.progressInfo = res.data;
-      this.progressVisible = true;
-    },
-  },
-};
+    async showProgressBox () {
+      const { data: res } = await this.$http.get('/kuaidi/DPK210206915703')
+      this.progressInfo = res.data
+      this.progressVisible = true
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

@@ -102,105 +102,105 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       queryInfo: { type: 3, pagenum: 1, pagesize: 5 },
       cateList: [],
       total: 0,
       columns: [
-        { label: "分类名称", prop: "cat_name" },
-        { label: "是否生效", type: "template", template: "isOn" },
-        { label: "排序", type: "template", template: "order" },
-        { label: "操作", type: "template", template: "opt" },
+        { label: '分类名称', prop: 'cat_name' },
+        { label: '是否生效', type: 'template', template: 'isOn' },
+        { label: '排序', type: 'template', template: 'order' },
+        { label: '操作', type: 'template', template: 'opt' }
       ],
       addCataDialogVisible: false,
-      addCateForm: { cat_pid: 0, cat_name: "", cat_level: 0 },
+      addCateForm: { cat_pid: 0, cat_name: '', cat_level: 0 },
       addCateFormRules: {
         cat_name: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
+          { required: true, message: '请输入用户名', trigger: 'blur' },
           {
             min: 2,
             max: 10,
-            message: "分类名的长度为2~10个字符",
-            trigger: "blur",
-          },
-        ],
+            message: '分类名的长度为2~10个字符',
+            trigger: 'blur'
+          }
+        ]
       },
       parentCateList: [],
       cascaderProps: {
-        value: "cat_id",
-        label: "cat_name",
-        children: "children",
+        value: 'cat_id',
+        label: 'cat_name',
+        children: 'children'
       },
-      selectedKeys: [],
-    };
+      selectedKeys: []
+    }
   },
-  created() {
-    this.getCateList();
+  created () {
+    this.getCateList()
   },
   methods: {
-    async getCateList() {
-      const { data: res } = await this.$http.get("categories", {
-        params: this.queryInfo,
-      });
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.cateList = res.data.result;
-      this.total = res.data.total;
+    async getCateList () {
+      const { data: res } = await this.$http.get('categories', {
+        params: this.queryInfo
+      })
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.cateList = res.data.result
+      this.total = res.data.total
     },
-    handleSizeChange(newSize) {
-      this.queryInfo.pagesize = newSize;
-      this.getCateList();
+    handleSizeChange (newSize) {
+      this.queryInfo.pagesize = newSize
+      this.getCateList()
     },
-    handleCurrentChange(newPage) {
-      this.queryInfo.pagenum = newPage;
-      this.getCateList();
+    handleCurrentChange (newPage) {
+      this.queryInfo.pagenum = newPage
+      this.getCateList()
     },
-    showAddCateDialog() {
-      this.getParentCateList();
-      this.addCataDialogVisible = true;
+    showAddCateDialog () {
+      this.getParentCateList()
+      this.addCataDialogVisible = true
     },
-    async getParentCateList() {
-      const { data: res } = await this.$http.get("categories", {
-        params: { type: 2 },
-      });
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.parentCateList = res.data;
+    async getParentCateList () {
+      const { data: res } = await this.$http.get('categories', {
+        params: { type: 2 }
+      })
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.parentCateList = res.data
     },
-    parentCateChange() {
+    parentCateChange () {
       if (this.selectedKeys.length > 0) {
         this.addCateForm.cat_pid = this.selectedKeys[
           this.selectedKeys.length - 1
-        ];
-        this.addCateForm.cat_level = this.selectedKeys.length;
+        ]
+        this.addCateForm.cat_level = this.selectedKeys.length
       } else {
-        this.addCateForm.cat_pid = 0;
-        this.addCateForm.cat_level = 0;
+        this.addCateForm.cat_pid = 0
+        this.addCateForm.cat_level = 0
       }
     },
-    addCate() {
+    addCate () {
       this.$refs.addCateFormRef.validate(async (valid) => {
-        if (!valid) return;
+        if (!valid) return
         const { data: res } = await this.$http.post(
-          "categories",
+          'categories',
           this.addCateForm
-        );
+        )
         if (res.meta.status !== 201) {
-          return this.$message.error(res.meta.msg);
+          return this.$message.error(res.meta.msg)
         }
-        this.$message.success(res.meta.msg);
-        this.getCateList();
-        this.addCataDialogVisible = false;
-        console.log(res);
-      });
+        this.$message.success(res.meta.msg)
+        this.getCateList()
+        this.addCataDialogVisible = false
+        console.log(res)
+      })
     },
-    addCateDialogClose() {
-      this.$refs.addCateFormRef.resetFields();
-      this.selectedKeys = [];
-      this.addCateForm.cat_pid = 0;
-      this.addCateForm.cat_level = 0;
-    },
-  },
-};
+    addCateDialogClose () {
+      this.$refs.addCateFormRef.resetFields()
+      this.selectedKeys = []
+      this.addCateForm.cat_pid = 0
+      this.addCateForm.cat_level = 0
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

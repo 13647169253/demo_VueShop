@@ -26,23 +26,23 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       rightsList: []
-    };
+    }
   },
-  created() {
-    this.getRightsList();
+  created () {
+    this.getRightsList()
   },
   methods: {
-    async getRightsList() {
-      const { data: res } = await this.$http.get("rights/list");
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
-      this.rightsList = res.data;
-      this.$message.success(res.meta.msg);
+    async getRightsList () {
+      const { data: res } = await this.$http.get('rights/list')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.rightsList = res.data
+      this.$message.success(res.meta.msg)
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped></style>

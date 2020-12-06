@@ -55,46 +55,46 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       menulist: [],
       iconsObj: {
-        125: "iconfont icon-users",
-        103: "iconfont icon-tijikongjian",
-        101: "iconfont icon-shangpin",
-        102: "iconfont icon-danju",
-        145: "iconfont icon-baobiao",
+        125: 'iconfont icon-users',
+        103: 'iconfont icon-tijikongjian',
+        101: 'iconfont icon-shangpin',
+        102: 'iconfont icon-danju',
+        145: 'iconfont icon-baobiao'
       },
       isCollapse: false,
-      activePath: "",
-    };
+      activePath: ''
+    }
   },
-  created() {
-    this.getMenuList();
-    this.activePath = window.sessionStorage.getItem("activePath");
+  created () {
+    this.getMenuList()
+    this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
-    logout() {
+    logout () {
       // 去除token并跳转页面
-      window.sessionStorage.removeItem("token");
-      this.$router.push("/login");
+      window.sessionStorage.removeItem('token')
+      this.$router.push('/login')
     },
-    async getMenuList() {
-      const { data: res } = await this.$http.get("menus");
-      if (res.meta.status != 200) return this.$message.error(res.meta.msg);
-      this.menulist = res.data;
+    async getMenuList () {
+      const { data: res } = await this.$http.get('menus')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.menulist = res.data
     },
     // 点击折叠功能
-    toggleCollapse() {
-      this.isCollapse = !this.isCollapse;
+    toggleCollapse () {
+      this.isCollapse = !this.isCollapse
     },
     // 保存二级菜单点击状态
-    saveNavState(activePath) {
-      window.sessionStorage.setItem("activePath", activePath);
-      this.activePath = activePath;
-    },
-  },
-};
+    saveNavState (activePath) {
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
